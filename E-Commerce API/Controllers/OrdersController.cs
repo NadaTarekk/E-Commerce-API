@@ -1,15 +1,7 @@
-﻿using AutoMapper;
-using E_Commerce_API.Data;
-using E_Commerce_API.Dtos.Order;
+﻿using E_Commerce_API.Dtos.Order;
 using E_Commerce_API.Interfaces;
-using E_Commerce_API.Models;
-using E_Commerce_API.Models.OrderAggregate;
-using E_Commerce_API.Repositories;
-using E_Commerce_API.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 namespace E_Commerce_API.Controllers

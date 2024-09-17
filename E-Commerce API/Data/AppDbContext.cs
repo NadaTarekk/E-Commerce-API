@@ -85,6 +85,37 @@ namespace E_Commerce_API.Data
                 new IdentityUserRole<string> { UserId = "user1", RoleId = "1" }, // StoreOwner
                 new IdentityUserRole<string> { UserId = "superadmin", RoleId = "2" } // SuperAdmin
             );
+
+            modelBuilder.Entity<Store>().HasData(
+                new Store
+                {
+                    Id = 1,
+                    Name = "Store 1",
+                    StoreOwnerId = "user1"  // StoreOwner seeded earlier
+                }
+            );
+
+                    // Seed Products
+            modelBuilder.Entity<Product>().HasData(
+                new Product
+                {
+                    Id = 1,
+                    Name = "Product 1",
+                    Price = 10.99M,
+                    Stock = 100,
+                    Description = "Description for Product 1",
+                    StoreId = 1
+                },
+                new Product
+                {
+                    Id = 2,
+                    Name = "Product 2",
+                    Price = 15.99M,
+                    Stock = 50,
+                    Description = "Description for Product 2",
+                    StoreId = 1
+                }
+            );
         }
     }
 }

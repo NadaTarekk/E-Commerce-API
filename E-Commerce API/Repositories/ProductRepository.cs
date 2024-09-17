@@ -30,6 +30,11 @@ namespace E_Commerce_API.Repositories
 
         }
 
+        public async Task<List<Product>> GetAllProductsAsync()
+        {
+            return await _context.Products.ToListAsync();
+        }
+
         public async Task<Product?> GetProductByIdAsync(int id)
         {
             return await _context.Products.FirstOrDefaultAsync(p => p.Id == id);

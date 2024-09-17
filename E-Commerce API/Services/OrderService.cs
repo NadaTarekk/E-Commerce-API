@@ -10,13 +10,13 @@ namespace E_Commerce_API.Services
 {
     public class OrderService : IOrderService
     {
-        private readonly AppDbContext _context;
+        private readonly IStoreRepository _storeRepository;
         private readonly IOrderRepository _orderRepository;
 
-        public OrderService(IOrderRepository orderRepository, AppDbContext context)
+        public OrderService(IOrderRepository orderRepository, IStoreRepository storeRepository)
         {
-            _context = context;
-            _orderRepository = orderRepository;
+            _storeRepository = storeRepository;
+             _orderRepository = orderRepository;
         }
 
         public async Task<bool> CancelOrderAsync(int orderId, string customerId)
@@ -109,7 +109,7 @@ namespace E_Commerce_API.Services
 
         private async Task<bool> IsStoreOwnerOfOrderAsync(string storeOwnerId, int orderStoreId)
         {
-           var store = await _context.Stores.FirstOrDefaultAsync(s => s.Id == orderStoreId);
+            var store = await _storeRepository.GetStoreByIdAsync(orderStoreId); 
             return store.StoreOwnerId == storeOwnerId;
         }
     }

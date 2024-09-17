@@ -84,6 +84,14 @@ namespace E_Commerce_API.Controllers
             return NoContent();
 
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var products = await _productRepository.GetAllProductsAsync();
+            return Ok(products);
+
+        }
     }
 }
 
