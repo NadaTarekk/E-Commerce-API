@@ -18,12 +18,10 @@ namespace E_Commerce_API.Controllers
     public class ProductsController : ControllerBase
     {
         private readonly IProductService _productService;
-        private readonly IProductRepository _productRepository;
 
-        public ProductsController(IProductRepository productRepository, IProductService productService)
+        public ProductsController(IProductService productService)
         {
             _productService = productService;
-            _productRepository = productRepository;
         }
 
         [HttpPost]
@@ -86,13 +84,7 @@ namespace E_Commerce_API.Controllers
 
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetAll()
-        {
-            var products = await _productRepository.GetAllProductsAsync();
-            return Ok(products);
-
-        }
+        
     }
 }
 

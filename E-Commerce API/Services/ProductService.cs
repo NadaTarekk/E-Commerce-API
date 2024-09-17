@@ -60,5 +60,6 @@ namespace E_Commerce_API.Services
 
             return newProduct;
         }
+
     }
 }
