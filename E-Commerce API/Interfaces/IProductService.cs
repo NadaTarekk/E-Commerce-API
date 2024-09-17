@@ -7,7 +7,8 @@ namespace E_Commerce_API.Interfaces
     {
         Task<Product?> UpdateProductAsync(int productId, UpdateProductRequestDto updateProductDto,
             string storeOwnerId);
-
         Task<Product> AddProductAsync(CreateProductRequestDto productDto,string storeOwnerId);
+
+        Task<Product?> DeleteProductAsync(int productId, string storeOwnerId);
     }
 }

@@ -21,10 +21,8 @@ namespace E_Commerce_API.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<Product?> DeleteProductAsync(int id)
-        {
-            var product = await GetProductByIdAsync(id);
-            if (product == null) return null;   
+        public async Task<Product> DeleteProductAsync(Product product)
+        {  
             _context.Products.Remove(product);
             await _context.SaveChangesAsync();
             return product;

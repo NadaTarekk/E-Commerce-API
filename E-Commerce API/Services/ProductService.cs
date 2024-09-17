@@ -34,6 +34,16 @@ namespace E_Commerce_API.Services
             return product;
         }
 
+        public async Task<Product?> DeleteProductAsync(int productId, string storeOwnerId)
+        {
+            var product = await _productRepository.GetProductByIdAsync(productId);
+            if (product == null) return null;
+            var store = await _storeRepository.GetStoreByOwnerId(storeOwnerId);
+            if (product.StoreId != store.Id) return null;
+            var deletedProduct = await _productRepository.DeleteProductAsync(product);
+            return deletedProduct;
+        }
+
         public async Task<Product?> UpdateProductAsync(int productId, UpdateProductRequestDto updateProductDto, string storeOwnerId)
         {
             var product = await _productRepository.GetProductByIdAsync(productId);

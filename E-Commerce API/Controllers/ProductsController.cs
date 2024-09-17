@@ -78,8 +78,13 @@ namespace E_Commerce_API.Controllers
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete([FromRoute]int id)
         {
-            var product = await _productRepository.DeleteProductAsync(id);
-            if(product == null) return NotFound();
+            var storeOwnerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var product = await _productService.DeleteProductAsync(id, storeOwnerId);
+            if (product == null) return BadRequest(new
+            {
+                Message = "Product not found or doesn't belong to this store owner"
+            });
+
             return NoContent();
 
         }

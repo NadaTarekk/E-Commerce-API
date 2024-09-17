@@ -8,7 +8,7 @@ namespace E_Commerce_API.Interfaces
     {
         Task AddProductAsync(Product product);
         Task<Product> UpdateProductAsync(Product product);
-        Task<Product?> DeleteProductAsync(int id);
+        Task<Product> DeleteProductAsync(Product product);
         Task<Product?> GetProductByIdAsync(int id);
         Task<List<Product>> GetAllProductsAsync();
     }
