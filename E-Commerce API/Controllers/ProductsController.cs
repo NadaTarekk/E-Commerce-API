@@ -18,14 +18,11 @@ namespace E_Commerce_API.Controllers
     public class ProductsController : ControllerBase
     {
         private readonly IProductService _productService;
-        private readonly IStoreRepository _storeRepository;
         private readonly IProductRepository _productRepository;
 
-        public ProductsController(IProductRepository productRepository, IStoreRepository storeRepository
-            , IProductService productService)
+        public ProductsController(IProductRepository productRepository, IProductService productService)
         {
             _productService = productService;
-            _storeRepository = storeRepository;
             _productRepository = productRepository;
         }
 
