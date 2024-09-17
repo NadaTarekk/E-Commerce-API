@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
+using System.Security.Claims;
 
 namespace E_Commerce_API.Controllers
 {
@@ -15,10 +16,12 @@ namespace E_Commerce_API.Controllers
     [Authorize(Roles = "StoreOwner")]
     public class ProductsController : ControllerBase
     {
+        private readonly IStoreRepository _storeRepository;
         private readonly IProductRepository _productRepository;
 
-        public ProductsController(IProductRepository productRepository)
+        public ProductsController(IProductRepository productRepository, IStoreRepository storeRepository)
         {
+            _storeRepository = storeRepository;
             _productRepository = productRepository;
         }
 
@@ -26,6 +29,8 @@ namespace E_Commerce_API.Controllers
         public async Task<IActionResult> AddProduct([FromBody] CreateProductRequestDto productDto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
+            var storeOwnerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var store = await _storeRepository.GetStoreByOwnerId(storeOwnerId);
 
             var product = new Product
             {
@@ -33,7 +38,7 @@ namespace E_Commerce_API.Controllers
                 Price = productDto.Price,
                 Stock = productDto.Stock,
                 Description = productDto.Description,
-                StoreId = productDto.StoreId
+                StoreId = store.Id
             };
 
             await _productRepository.AddProductAsync(product);

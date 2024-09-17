@@ -33,5 +33,10 @@ namespace E_Commerce_API.Repositories
         {
             return await _context.Stores.FirstOrDefaultAsync(s => s.Id == id); 
         }
+
+        public async Task<Store?> GetStoreByOwnerId(string ownerId)
+        {
+            return await _context.Stores.FirstOrDefaultAsync(s => s.StoreOwnerId == ownerId);
+        }
     }
 }

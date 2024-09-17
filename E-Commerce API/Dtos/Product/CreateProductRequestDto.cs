@@ -13,8 +13,7 @@ namespace E_Commerce_API.Dtos.Product
         public int Stock { get; set; }
         [Required]
         public string Description { get; set; }
-        [Required]
-        public int StoreId { get; set; }
+        
 
     }
 }

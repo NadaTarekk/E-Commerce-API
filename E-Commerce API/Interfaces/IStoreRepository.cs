@@ -7,5 +7,6 @@ namespace E_Commerce_API.Interfaces
         Task AddStoreAsync(Store store);
         Task<Store?> DeleteStoreAsync(int id);
         Task<Store?> GetStoreByIdAsync(int id);
+        Task<Store?> GetStoreByOwnerId(string ownerId);
     }
 }
