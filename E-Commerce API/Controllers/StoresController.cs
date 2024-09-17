@@ -2,6 +2,7 @@
 using E_Commerce_API.Interfaces;
 using E_Commerce_API.Models;
 using E_Commerce_API.Repositories;
+using E_Commerce_API.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -16,13 +17,13 @@ namespace E_Commerce_API.Controllers
     [Authorize(Roles = "SuperAdmin")]
     public class StoresController : ControllerBase
     {
-        private readonly UserManager<AppUser> _userManager;
         private readonly IStoreRepository _storeRepository;
+        private readonly IStoreService _storeService;
 
-        public StoresController(IStoreRepository storeRepository, UserManager<AppUser> userManager)
+        public StoresController(IStoreService storeService, IStoreRepository storeRepository)
         {
-            _userManager = userManager;
             _storeRepository = storeRepository;
+            _storeService = storeService;
         }
 
         [HttpPost]
@@ -30,17 +31,8 @@ namespace E_Commerce_API.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var stowerOwner = await _userManager.FindByIdAsync(createStoreDto.StoreOwnerId);
-            if (stowerOwner == null) return NotFound(new { Message = "this store owner doesn't exist" });
-
-            Store store = new Store
-            {
-                Name = createStoreDto.Name,
-                StoreOwnerId = createStoreDto.StoreOwnerId
-
-            };
-
-             await _storeRepository.AddStoreAsync(store);
+            var store = await _storeService.AddStoreAsync(createStoreDto);
+            if(store == null) return BadRequest(new {Message="Store Owner Id doesn't exist"});
 
             var storeResponse = new StoreResponseDto
             {
