@@ -2,6 +2,7 @@
 using E_Commerce_API.Dtos.Product;
 using E_Commerce_API.Interfaces;
 using E_Commerce_API.Models;
+using E_Commerce_API.Models.OrderAggregate;
 using Microsoft.EntityFrameworkCore;
 
 namespace E_Commerce_API.Repositories
@@ -40,16 +41,9 @@ namespace E_Commerce_API.Repositories
             return await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        public async Task<Product?> UpdateProductAsync(int id, UpdateProductRequestDto updateProductDto)
+        public async Task<Product> UpdateProductAsync(Product product)
         {
-            var product = await GetProductByIdAsync(id);
-            if (product == null) return null;
-
-            product.Price = updateProductDto.Price;
-            product.Description = updateProductDto.Description;
-            product.Name = updateProductDto.Name;
-            product.Stock = updateProductDto.Stock;
-
+            _context.Products.Update(product);
             await _context.SaveChangesAsync();
 
             return product;

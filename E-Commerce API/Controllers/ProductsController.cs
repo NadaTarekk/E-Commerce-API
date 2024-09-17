@@ -2,6 +2,7 @@
 using E_Commerce_API.Interfaces;
 using E_Commerce_API.Models;
 using E_Commerce_API.Repositories;
+using E_Commerce_API.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,11 +17,14 @@ namespace E_Commerce_API.Controllers
     [Authorize(Roles = "StoreOwner")]
     public class ProductsController : ControllerBase
     {
+        private readonly IProductService _productService;
         private readonly IStoreRepository _storeRepository;
         private readonly IProductRepository _productRepository;
 
-        public ProductsController(IProductRepository productRepository, IStoreRepository storeRepository)
+        public ProductsController(IProductRepository productRepository, IStoreRepository storeRepository
+            , IProductService productService)
         {
+            _productService = productService;
             _storeRepository = storeRepository;
             _productRepository = productRepository;
         }
@@ -30,18 +34,7 @@ namespace E_Commerce_API.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
             var storeOwnerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var store = await _storeRepository.GetStoreByOwnerId(storeOwnerId);
-
-            var product = new Product
-            {
-                Name = productDto.Name,
-                Price = productDto.Price,
-                Stock = productDto.Stock,
-                Description = productDto.Description,
-                StoreId = store.Id
-            };
-
-            await _productRepository.AddProductAsync(product);
+            var product = await _productService.AddProductAsync(productDto, storeOwnerId);
 
             var productResponse = new ProductResponseDto
             {
@@ -61,10 +54,11 @@ namespace E_Commerce_API.Controllers
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateProductRequestDto updateProductDto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
+            var storeOwnerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var product = await _productService.UpdateProductAsync(id, updateProductDto, storeOwnerId);
 
-            var product = await _productRepository.UpdateProductAsync(id, updateProductDto);
-
-            if (product == null) return NotFound();
+            if (product == null) return BadRequest(new {
+                Message="Product not found or doesn't belong to this store owner"});
 
             var productResponse = new ProductResponseDto
             {
