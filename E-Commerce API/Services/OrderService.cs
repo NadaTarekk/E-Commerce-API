@@ -42,7 +42,7 @@ namespace E_Commerce_API.Services
             return true;
         }
 
-            public async Task<Order> CreateOrderAsync(CreateOrderRequestDto createOrderDto)
+            public async Task<Order> CreateOrderAsync(CreateOrderRequestDto createOrderDto, string customerId)
         {
             List<OrderItem> orderItems = new List<OrderItem>();
             foreach (var orderitem in createOrderDto.OrderItems)
@@ -55,24 +55,12 @@ namespace E_Commerce_API.Services
                 });
             }
 
-            var address = new Address
-            {
-                FirstName = createOrderDto.ShipToAddress.FirstName,
-                LastName = createOrderDto.ShipToAddress.LastName,
-                ZipCode = createOrderDto.ShipToAddress.ZipCode,
-                City = createOrderDto.ShipToAddress.City,
-                State = createOrderDto.ShipToAddress.State,
-                Street = createOrderDto.ShipToAddress.Street,
-
-            };
-
-
             var order = new Order
             {
                 DeliveryMethodId = createOrderDto.DeliveryMethodId,
-                CustomerId = createOrderDto.CustomerId,
+                CustomerId = customerId,
                 StoreId = createOrderDto.StoreId,
-                ShipToAddress = address,
+                ShipToAddress = createOrderDto.ShipToAddress,
                 OrderItems = orderItems
 
             };

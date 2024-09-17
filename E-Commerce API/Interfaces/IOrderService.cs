@@ -6,8 +6,8 @@ namespace E_Commerce_API.Interfaces
 {
     public interface IOrderService
     {
-        Task<Order> CreateOrderAsync(CreateOrderRequestDto createOrderDto);
         Task<bool> CancelOrderAsync(int orderId, string customerId);
         Task<bool> UpdateOrderStatusAsync(int orderId, OrderStatus newStatus, string storeOwnerId);
+        Task<Order> CreateOrderAsync(CreateOrderRequestDto createOrderDto, string customerId);
     }
 }

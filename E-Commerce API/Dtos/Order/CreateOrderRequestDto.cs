@@ -12,13 +12,10 @@ namespace E_Commerce_API.Dtos.Order
         public int DeliveryMethodId { get; set; }
 
         [Required]
-        public string CustomerId { get; set; }
-
-        [Required]
         public int StoreId { get; set; }
 
         [Required]
-        public AddressDto ShipToAddress { get; set; }
+        public Address ShipToAddress { get; set; }
 
         [Required]
         public List<OrderItemDto> OrderItems { get; set; }

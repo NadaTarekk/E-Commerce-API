@@ -21,9 +21,10 @@ namespace E_Commerce_API.Controllers
         public async Task<IActionResult> CreateOrder(CreateOrderRequestDto createOrderDto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
+            var customerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
 
-            var order = await _orderService.CreateOrderAsync(createOrderDto);
+            var order = await _orderService.CreateOrderAsync(createOrderDto, customerId);
 
             return Ok(order);
 

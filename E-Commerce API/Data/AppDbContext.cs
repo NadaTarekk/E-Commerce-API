@@ -116,6 +116,15 @@ namespace E_Commerce_API.Data
                     StoreId = 1
                 }
             );
+            modelBuilder.Entity<DeliveryMethod>().HasData(
+               new DeliveryMethod
+               {
+                   Id = 1,
+                   Name = "Standard Shipping",
+                   DeliveryTime = "5-7 Business Days",
+                   Description = "Economical shipping option",
+                   Price = 5.99M
+               });
         }
     }
 }

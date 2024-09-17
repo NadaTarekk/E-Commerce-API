@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using E_Commerce_API.Models.OrderAggregate;
+using System.ComponentModel.DataAnnotations;
 
 namespace E_Commerce_API.Dtos.Order
 {
@@ -14,7 +15,7 @@ namespace E_Commerce_API.Dtos.Order
         public int StoreId { get; set; }
 
        
-        public AddressDto ShipToAddress { get; set; }
+        public Address ShipToAddress { get; set; }
 
       
         public List<OrderItemDto> OrderItems { get; set; }
