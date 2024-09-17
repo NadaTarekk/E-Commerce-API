@@ -44,7 +44,7 @@ namespace E_Commerce_API.Controllers
 
             return Ok(new { Message = "Order cancelled successfully." });
         }
-        [Authorize(Roles = "SuperAdmin")]
+        [Authorize(Roles = "StoreOwner")]
         [HttpPut("{orderId}/status")]
         public async Task<IActionResult> UpdateOrderStatus(int orderId, [FromBody] UpdateOrderStatusDto updateOrderStatusDto)
         {
