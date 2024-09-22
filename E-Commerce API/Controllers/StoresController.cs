@@ -17,12 +17,10 @@ namespace E_Commerce_API.Controllers
     [Authorize(Roles = "SuperAdmin")]
     public class StoresController : ControllerBase
     {
-        private readonly IStoreRepository _storeRepository;
         private readonly IStoreService _storeService;
 
-        public StoresController(IStoreService storeService, IStoreRepository storeRepository)
+        public StoresController(IStoreService storeService)
         {
-            _storeRepository = storeRepository;
             _storeService = storeService;
         }
 
@@ -31,22 +29,16 @@ namespace E_Commerce_API.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var store = await _storeService.AddStoreAsync(createStoreDto);
-            if(store == null) return BadRequest(new {Message="Store Owner Id doesn't exist"});
+            var storeResponse = await _storeService.AddStoreAsync(createStoreDto);
+            if(storeResponse == null) return BadRequest(new {Message="Store Owner Id doesn't exist"});
 
-            var storeResponse = new StoreResponseDto
-            {
-                Name = store.Name,
-                Id = store.Id,
-                StoreOwnerId =store.StoreOwnerId
-            };
             return Ok(storeResponse);
 
         }
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteStore([FromRoute]int id)
         {
-            var store = await _storeRepository.DeleteStoreAsync(id);
+            var store = await _storeService.DeleteStoreAsync(id);
             if (store == null) return NotFound();
             return NoContent();
         }

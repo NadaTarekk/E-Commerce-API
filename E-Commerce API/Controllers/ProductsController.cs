@@ -29,19 +29,7 @@ namespace E_Commerce_API.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
             var storeOwnerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var product = await _productService.AddProductAsync(productDto, storeOwnerId);
-
-            var productResponse = new ProductResponseDto
-            {
-                Id = product.Id,
-                Name = product.Name,
-                Price = product.Price,
-                Stock = product.Stock,
-                Description = product.Description,
-                StoreId = product.StoreId
-
-            };
-            
+            var productResponse = await _productService.AddProductAsync(productDto, storeOwnerId);
             return Ok(productResponse);
         }
 
@@ -50,21 +38,10 @@ namespace E_Commerce_API.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
             var storeOwnerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var product = await _productService.UpdateProductAsync(id, updateProductDto, storeOwnerId);
+            var productResponse = await _productService.UpdateProductAsync(id, updateProductDto, storeOwnerId);
 
-            if (product == null) return BadRequest(new {
+            if (productResponse == null) return BadRequest(new {
                 Message="Product not found or doesn't belong to this store owner"});
-
-            var productResponse = new ProductResponseDto
-            {
-                Id = product.Id,
-                Name = product.Name,
-                Price = product.Price,
-                Stock = product.Stock,
-                Description = product.Description,
-                StoreId = product.StoreId
-
-            };
 
             return Ok(productResponse);
 

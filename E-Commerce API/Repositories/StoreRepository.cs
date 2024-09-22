@@ -20,13 +20,10 @@ namespace E_Commerce_API.Repositories
            
         }
 
-        public async Task<Store?> DeleteStoreAsync(int id)
+        public async Task DeleteStoreAsync(Store store)
         {
-            var store = await GetStoreByIdAsync(id);
-            if (store == null) return null;
             _context.Stores.Remove(store);
             await _context.SaveChangesAsync();
-            return store;
         }
 
         public async Task<Store?> GetStoreByIdAsync(int id)

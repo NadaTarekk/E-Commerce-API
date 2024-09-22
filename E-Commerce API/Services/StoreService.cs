@@ -17,7 +17,7 @@ namespace E_Commerce_API.Services
             _userManager = userManager;
 
         }
-        public async Task<Store?> AddStoreAsync(CreateStoreRequestDto createStoreDto)
+        public async Task<StoreResponseDto?> AddStoreAsync(CreateStoreRequestDto createStoreDto)
         {
             var stowerOwner = await _userManager.FindByIdAsync(createStoreDto.StoreOwnerId);
             if (stowerOwner == null) return null;
@@ -30,6 +30,20 @@ namespace E_Commerce_API.Services
             };
 
             await _storeRepository.AddStoreAsync(store);
+            var storeResponse = new StoreResponseDto
+            {
+                Name = store.Name,
+                Id = store.Id,
+                StoreOwnerId = store.StoreOwnerId
+            };
+            return storeResponse;
+        }
+
+        public async Task<Store?> DeleteStoreAsync(int id)
+        {
+            var store = await _storeRepository.GetStoreByIdAsync(id);
+            if (store == null) return null;
+            await _storeRepository.DeleteStoreAsync(store);
             return store;
         }
     }

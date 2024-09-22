@@ -5,6 +5,7 @@ namespace E_Commerce_API.Interfaces
 {
     public interface IStoreService
     {
-        Task<Store?> AddStoreAsync(CreateStoreRequestDto createStoreDto);
+        Task<StoreResponseDto?> AddStoreAsync(CreateStoreRequestDto createStoreDto);
+        Task<Store?> DeleteStoreAsync(int id);
     }
 }

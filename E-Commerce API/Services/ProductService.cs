@@ -17,7 +17,7 @@ namespace E_Commerce_API.Services
             _storeRepository = storeRepository;
         }
 
-        public async  Task<Product> AddProductAsync(CreateProductRequestDto productDto, string storeOwnerId)
+        public async  Task<ProductResponseDto> AddProductAsync(CreateProductRequestDto productDto, string storeOwnerId)
         {
             var store = await _storeRepository.GetStoreByOwnerId(storeOwnerId);
 
@@ -31,7 +31,17 @@ namespace E_Commerce_API.Services
             };
 
             await _productRepository.AddProductAsync(product);
-            return product;
+            var productResponse = new ProductResponseDto
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Price = product.Price,
+                Stock = product.Stock,
+                Description = product.Description,
+                StoreId = product.StoreId
+
+            };
+            return productResponse;
         }
 
         public async Task<Product?> DeleteProductAsync(int productId, string storeOwnerId)
@@ -44,7 +54,7 @@ namespace E_Commerce_API.Services
             return deletedProduct;
         }
 
-        public async Task<Product?> UpdateProductAsync(int productId, UpdateProductRequestDto updateProductDto, string storeOwnerId)
+        public async Task<ProductResponseDto?> UpdateProductAsync(int productId, UpdateProductRequestDto updateProductDto, string storeOwnerId)
         {
             var product = await _productRepository.GetProductByIdAsync(productId);
             if (product == null) return null;
@@ -58,7 +68,18 @@ namespace E_Commerce_API.Services
 
             var newProduct = await _productRepository.UpdateProductAsync(product);
 
-            return newProduct;
+            var productResponse = new ProductResponseDto
+            {
+                Id = newProduct.Id,
+                Name = newProduct.Name,
+                Price = newProduct.Price,
+                Stock = newProduct.Stock,
+                Description = newProduct.Description,
+                StoreId = newProduct.StoreId
+
+            };
+
+            return productResponse;
         }
 
     }
